@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<!-- Metadados do projeto -->
+<meta name="author" content="Gabriel Matheus Abreu de Souza" />
+<meta name="creator" content="Gabriel Matheus Abreu de Souza" />
+<meta name="version" content="1.3.6" />
+<meta name="description" content="Gerador de assinaturas profissionais para e-mail, criado para facilitar a construção de assinaturas modernas, personalizáveis e compatíveis com Gmail." />
+<meta name="generator" content="ChatGPT da OpenAI — IA generativa utilizada com Prompt Engineering" />
+<meta name="keywords" content="assinatura de e-mail, Gmail, HTML, gerador de assinatura, LinkedIn, identidade profissional, prompt engineering, ChatGPT, OpenAI" />
+
+<title>Gerador de Assinatura Profissional — v1.3.6</title>
+
+<style>
+  :root{
+    --bg:#f5f7fb;
+    --card:#ffffff;
+    --text:#111827;
+    --muted:#667085;
+    --border:#dbe3ec;
+    --primary:#111820;
+    --accent:#00a651;
+  }
+
+  *{box-sizing:border-box}
+
+  body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:linear-gradient(180deg,#f7f9fc 0%,#eef3f8 100%);
+    color:var(--text);
+  }
+
+  a{color:inherit}
+
+  .page{
+    max-width:1180px;
+    margin:0 auto;
+    padding:28px 18px 48px;
+  }
+
+  .hero{
+    display:flex;
+    justify-content:space-between;
+    gap:20px;
+    align-items:flex-start;
+    margin-bottom:20px;
+  }
+
+  .hero h1{
+    margin:0 0 6px;
+    color:#0b1f33;
+    font-size:28px;
+  }
+
+  .hero p{
+    margin:0;
+    color:#667085;
+    line-height:1.55;
+  }
+
+  .version{
+    white-space:nowrap;
+    background:#e8eef5;
+    color:#475467;
+    border:1px solid #d6dee8;
+    border-radius:999px;
+    padding:7px 11px;
+    font-size:12px;
+    font-weight:800;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:minmax(320px,430px) 1fr;
+    gap:20px;
+    align-items:start;
+  }
+
+  .card{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:16px;
+    box-shadow:0 10px 35px rgba(15,23,42,.07);
+  }
+
+  .form-card{padding:22px}
+  .preview-card{padding:22px;position:sticky;top:18px}
+
+  .section-title{
+    font-size:13px;
+    font-weight:800;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:#344054;
+    margin:6px 0 12px;
+  }
+
+  .example-panel{
+    margin-bottom:18px;
+    padding:14px;
+    border:1px solid #dbe5ef;
+    border-radius:12px;
+    background:linear-gradient(180deg,#fbfdff 0%,#f7fafc 100%);
+  }
+
+  .example-panel label{
+    margin-bottom:7px;
+  }
+
+  .example-description{
+    margin-top:8px;
+    color:#667085;
+    font-size:11.8px;
+    line-height:1.5;
+  }
+
+  .field{margin-bottom:14px}
+
+  label{
+    display:block;
+    font-size:12.5px;
+    font-weight:700;
+    color:#344054;
+    margin-bottom:6px;
+  }
+
+  input, textarea, select{
+    width:100%;
+    border:1px solid #cfd8e3;
+    border-radius:9px;
+    padding:10px 11px;
+    font:inherit;
+    font-size:14px;
+    color:#111827;
+    background:#fff;
+    outline:none;
+  }
+
+  input:focus, textarea:focus, select:focus{
+    border-color:#0a84ff;
+    box-shadow:0 0 0 3px rgba(10,132,255,.12);
+  }
+
+  textarea{min-height:74px;resize:vertical}
+
+  .row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+
+  .color-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+
+  .color-control{
+    display:flex;
+    gap:8px;
+    align-items:center;
+  }
+
+  .color-control input[type=color]{
+    width:48px;
+    height:42px;
+    padding:4px;
+    cursor:pointer;
+  }
+
+  .color-control input[type=text]{flex:1}
+
+
+  input::placeholder, textarea::placeholder{
+    color:#98a2b3;
+    opacity:1;
+  }
+
+  input, textarea, select{
+    color:#111827;
+  }
+
+  .field.invalid input,
+  .field.invalid textarea,
+  .field.invalid select{
+    border-color:#d92d20;
+    box-shadow:0 0 0 3px rgba(217,45,32,.08);
+  }
+
+  .error-message{
+    display:none;
+    margin-top:5px;
+    color:#d92d20;
+    font-size:11.5px;
+    line-height:1.35;
+    font-weight:700;
+  }
+
+  .field.invalid .error-message{
+    display:block;
+  }
+
+  .radio-group{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+
+  .radio-option{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    padding:9px 11px;
+    border:1px solid #dbe3ec;
+    border-radius:9px;
+    background:#fff;
+    cursor:pointer;
+    font-size:12.5px;
+    color:#475467;
+    font-weight:700;
+  }
+
+  .radio-option input{
+    width:auto;
+    margin:0;
+  }
+
+  .radio-option:has(input:checked){
+    border-color:#0a84ff;
+    background:#f5faff;
+  }
+
+  .hint{
+    color:#7b8794;
+    font-size:11.5px;
+    line-height:1.45;
+    margin-top:5px;
+  }
+
+  .switch{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin:6px 0 14px;
+    color:#475467;
+    font-size:13px;
+    font-weight:700;
+  }
+
+  .switch input{width:auto}
+
+  .actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:16px;
+  }
+
+  button{
+    border:0;
+    border-radius:9px;
+    padding:10px 14px;
+    font-size:13px;
+    font-weight:800;
+    cursor:pointer;
+  }
+
+  .primary{background:#0a84ff;color:#fff}
+  .secondary{background:#eaf2fb;color:#0b4f8a}
+  .ghost{background:#f2f4f7;color:#475467}
+
+  button:hover{filter:brightness(.98)}
+
+  .preview-shell{
+    background:#fff;
+    border:1px dashed #cbd5e1;
+    border-radius:12px;
+    padding:22px;
+    min-height:210px;
+    display:flex;
+    align-items:center;
+    overflow-x:auto;
+  }
+
+  .status{
+    margin-top:10px;
+    min-height:18px;
+    color:#177245;
+    font-size:12.5px;
+    font-weight:700;
+  }
+
+  .code-wrap{margin-top:16px}
+
+  .advanced-code{
+    border:1px solid #dbe3ec;
+    border-radius:10px;
+    background:#f8fafc;
+    overflow:hidden;
+  }
+
+  .advanced-code summary{
+    cursor:pointer;
+    list-style:none;
+    padding:12px 14px;
+    font-size:12.5px;
+    font-weight:800;
+    color:#475467;
+    user-select:none;
+  }
+
+  .advanced-code summary::-webkit-details-marker{display:none}
+
+  .advanced-code summary::before{
+    content:"▸";
+    display:inline-block;
+    margin-right:8px;
+    color:#0a84ff;
+    transition:transform .15s ease;
+  }
+
+  .advanced-code[open] summary::before{
+    transform:rotate(90deg);
+  }
+
+  .advanced-code .advanced-inner{
+    padding:0 12px 12px;
+  }
+
+  .advanced-code .advanced-help{
+    margin:0 0 8px;
+    color:#7b8794;
+    font-size:11.5px;
+    line-height:1.45;
+  }
+
+  .code-wrap textarea{
+    min-height:230px;
+    font-family:Consolas,Monaco,monospace;
+    font-size:12px;
+    line-height:1.45;
+    background:#0f172a;
+    color:#e2e8f0;
+    border-color:#0f172a;
+  }
+
+  .note{
+    margin-top:18px;
+    padding:14px 16px;
+    border-radius:10px;
+    background:#eef5fc;
+    color:#475569;
+    font-size:12.5px;
+    line-height:1.55;
+  }
+
+  .fictional-note{
+    margin:0 0 18px;
+    padding:12px 14px;
+    border-radius:10px;
+    border:1px solid #d9e2ec;
+    background:#f8fafc;
+    color:#5b6676;
+    font-size:12px;
+    line-height:1.5;
+  }
+
+  .about{
+    margin-top:22px;
+    padding:22px;
+  }
+
+  .about-grid{
+    display:grid;
+    grid-template-columns:1.4fr 1fr;
+    gap:24px;
+  }
+
+  .about h2{
+    margin:0 0 10px;
+    color:#0b1f33;
+    font-size:20px;
+  }
+
+  .about p{
+    margin:0 0 10px;
+    color:#5d6878;
+    line-height:1.6;
+    font-size:13.5px;
+  }
+
+  .credit-box{
+    background:#f6f8fb;
+    border:1px solid #e0e6ed;
+    border-radius:12px;
+    padding:16px;
+  }
+
+  .credit-box strong{
+    display:block;
+    color:#0b1f33;
+    margin-bottom:5px;
+  }
+
+  .credit-links{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:12px;
+  }
+
+  .credit-links a{
+    text-decoration:none;
+    font-size:12px;
+    font-weight:800;
+    padding:8px 10px;
+    border-radius:8px;
+    background:#eaf2fb;
+    color:#0a66c2;
+  }
+
+  .credit-links a.github{
+    color:#24292f;
+    background:#eef0f2;
+  }
+
+  .footer{
+    text-align:center;
+    color:#7b8794;
+    font-size:11.5px;
+    margin-top:18px;
+  }
+
+  @media (max-width:900px){
+    .grid{grid-template-columns:1fr}
+    .preview-card{position:static}
+    .about-grid{grid-template-columns:1fr}
+    .hero{display:block}
+    .version{display:inline-block;margin-top:12px}
+  }
+
+  @media (max-width:560px){
+    .row,.color-row{grid-template-columns:1fr}
+  }
+</style>
+</head>
+
+<body>
+<div class="page">
+
+  <div class="hero">
+    <div>
+      <h1>Gerador de Assinatura Profissional</h1>
+      <p>Preencha seus dados, personalize a identidade visual e copie uma assinatura pronta para o Gmail.</p>
+    </div>
+    <div class="version">v1.3.6</div>
+  </div>
+
+  <div class="fictional-note">
+    <strong>Exemplos fictícios:</strong> use o seletor de perfil abaixo para visualizar sugestões de preenchimento em diferentes áreas. Os exemplos aparecem em <strong>cinza dentro dos campos</strong>; quando você digitar seus próprios dados, o texto ficará preto. A opção “Demo criativa — John Stewart” continua como exemplo principal.
+  </div>
+
+  <div class="grid">
+
+    <div class="card form-card">
+
+      <div class="section-title">Perfil de exemplo</div>
+
+      <div class="example-panel">
+        <label for="exampleProfile">Escolha uma demonstração</label>
+        <select id="exampleProfile">
+          <option value="john">Demo criativa — John Stewart</option>
+          <option value="tech">Tecnologia</option>
+          <option value="admin">Administrativo / Negócios</option>
+          <option value="engineering">Engenharia</option>
+          <option value="design">Design / Criativo</option>
+          <option value="health">Saúde</option>
+        </select>
+        <div id="exampleDescription" class="example-description">
+          Persona criativa para demonstrar que profissão, áreas, cores e frase podem ser totalmente personalizadas.
+        </div>
+      </div>
+
+      <div class="section-title">Dados principais</div>
+
+      <div class="field">
+        <label for="name">Nome completo</label>
+        <input id="name" placeholder="John Stewart" />
+        <div class="hint">Ex.: João Pedro Almeida, Maria Fernanda Costa.</div>
+      </div>
+
+      <div class="field">
+        <label for="highlight">Parte do nome para destacar</label>
+        <input id="highlight" placeholder="Stewart" />
+        <div class="hint">Ex.: sobrenome, segundo nome ou a parte que você quer destacar visualmente.</div>
+      </div>
+
+      <div class="field">
+        <label for="role">Curso / profissão</label>
+        <input id="role" placeholder="Arquiteto | Oficial do Corpo dos Lanternas Verdes" />
+        <div id="roleHint" class="hint">Ex.: Estudante de ADS, Analista Administrativo, Engenheira Civil, Designer.</div>
+      </div>
+
+      <div class="field">
+        <label for="areas">Áreas de destaque</label>
+        <input id="areas" placeholder="Arquitetura, Liderança, Estratégia, Operações" />
+        <div id="areasHint" class="hint">Escolha de 3 a 4 áreas que representem seu foco profissional. Separe por vírgulas.</div>
+      </div>
+
+      <div class="section-title">Contato</div>
+
+      <div class="row">
+        <div class="field" id="phoneField">
+          <label for="phone">Telefone / WhatsApp</label>
+          <input id="phone" inputmode="numeric" autocomplete="tel" maxlength="15" placeholder="(31) 99999-9999" />
+          <div class="error-message" id="phoneError">Por favor, digite um telefone válido no formato (xx) xxxxx-xxxx.</div>
+        </div>
+
+        <div class="field">
+          <label for="country">Código do país</label>
+          <input id="country" value="55" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="waMessage">Mensagem inicial do WhatsApp</label>
+        <input id="waMessage" placeholder="Olá, vi seu contato no e-mail!" />
+      </div>
+
+      <div class="field" id="emailField">
+        <label for="email">E-mail</label>
+        <input id="email" type="email" autocomplete="email" placeholder="nome.sobrenome@email.com" />
+        <div class="error-message" id="emailError">Por favor, digite um e-mail válido.</div>
+      </div>
+
+      <div class="field">
+        <label for="linkedin">LinkedIn</label>
+        <input id="linkedin" placeholder="https://www.linkedin.com/in/seu-perfil/" />
+      </div>
+
+      <div class="field">
+        <label for="location">Cidade / Estado</label>
+        <input id="location" placeholder="Belo Horizonte, MG" />
+      </div>
+
+      <div class="section-title">Identidade visual</div>
+
+      <div class="color-row">
+
+        <div class="field">
+          <label>Cor principal</label>
+          <div class="color-control">
+            <input id="primaryPicker" type="color" value="#111820" />
+            <input id="primaryHex" type="text" value="#111820" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Cor de destaque</label>
+          <div class="color-control">
+            <input id="accentPicker" type="color" value="#00A651" />
+            <input id="accentHex" type="text" value="#00A651" />
+          </div>
+        </div>
+
+      </div>
+
+      <div class="field">
+        <label for="tagline">Frase profissional</label>
+        <input id="tagline" placeholder="Construindo soluções com disciplina, propósito e visão." />
+        <div id="taglineHint" class="hint">Use uma frase curta que traduza seu posicionamento profissional.</div>
+      </div>
+
+      <div class="field">
+        <label>Cor dos links</label>
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="linkColorMode" value="accent" checked />
+            Usar cor de destaque
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="linkColorMode" value="black" />
+            Preto
+          </label>
+        </div>
+        <div class="hint">Define a cor dos links de WhatsApp, e-mail e LinkedIn na assinatura.</div>
+      </div>
+
+      <label class="switch">
+        <input id="showPhoto" type="checkbox" />
+        Usar foto
+      </label>
+
+      <div class="field" id="photoFields" style="display:none;">
+        <label for="photoUrl">URL pública da foto</label>
+        <input id="photoUrl" placeholder="https://..." />
+        <div class="hint">Para uso real no Gmail, prefira uma foto já tratada e uma URL HTTPS pública.</div>
+      </div>
+
+      <div class="field" id="localPhotoField" style="display:none;">
+        <label for="photoFile">Carregar foto para pré-visualização</label>
+        <input id="photoFile" type="file" accept="image/*" />
+        <div id="photoStatus" class="hint"></div><div class="hint"><strong>Otimização automática:</strong> a foto enviada pelo computador será recortada e otimizada no próprio navegador, preservando o máximo de qualidade possível dentro do limite do Gmail. Você não precisa hospedar a foto em outro site.</div>
+      </div>
+
+      <div class="actions">
+        <button class="primary" id="copyFormatted">Copiar assinatura formatada</button>
+        <button class="secondary" id="copyHtml">Copiar HTML</button>
+        <button class="secondary" id="downloadHtml">Baixar HTML da assinatura</button>
+        <button class="ghost" id="reset">Restaurar exemplo selecionado</button>
+      </div>
+
+      <div id="status" class="status"></div>
+    </div>
+
+    <div class="card preview-card">
+
+      <div class="section-title">Pré-visualização</div>
+
+      <div class="preview-shell">
+        <div id="signature"></div>
+      </div>
+
+      <div class="code-wrap">
+        <details class="advanced-code">
+          <summary>Opções avançadas · Ver HTML gerado</summary>
+          <div class="advanced-inner">
+            <p class="advanced-help">
+              Esta área é opcional. Para usar no Gmail, normalmente basta clicar em <strong>Copiar assinatura formatada</strong>.
+              O código é útil para quem quiser editar, estudar ou integrar a assinatura em outro sistema.
+            </p>
+            <textarea id="htmlCode" readonly></textarea>
+            <div id="gmailSize" class="hint" style="margin-top:8px;"></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="note">
+        <strong>Como usar:</strong> preencha seus dados e clique em <strong>Copiar assinatura formatada</strong>. Para a maioria das pessoas, não é necessário visualizar nem editar o HTML. Depois, no Gmail, acesse <strong>Configurações → Ver todas as configurações → Geral → Assinatura</strong> e cole.<br><br>
+        <strong>Foto:</strong> ao carregar uma imagem do computador, o gerador cria automaticamente uma cópia leve, quadrada e otimizada para a assinatura. A imagem original não é enviada para nenhum servidor. Uma URL pública continua disponível apenas como alternativa.
+      </div>
+
+    </div>
+
+  </div>
+
+  <section class="card about">
+    <div class="about-grid">
+      <div>
+        <h2>Sobre o projeto</h2>
+        <p>
+          Este gerador nasceu da ideia de simplificar a criação de assinaturas profissionais de e-mail para estudantes, profissionais em início de carreira, candidatos a vagas e pessoas que desejam fortalecer sua identidade digital sem precisar editar HTML manualmente.
+        </p>
+        <p>
+          A ferramenta permite preencher dados pessoais, gerar automaticamente links de WhatsApp, e-mail e LinkedIn, personalizar cores, visualizar o resultado em tempo real e copiar ou baixar o HTML final. A versão 1.3.6 também otimiza automaticamente fotos carregadas pelo computador e utiliza uma estrutura de contatos mais estável em telas menores, mantendo foco em compatibilidade com o Gmail.
+        </p>
+        <p>
+          O projeto também funciona como um exercício prático de aplicação de <strong>Prompt Engineering</strong> e uso de <strong>IA generativa</strong> para transformar uma necessidade real em uma solução funcional.
+        </p>
+      </div>
+
+      <div class="credit-box">
+        <strong>Gerador de Assinatura Profissional</strong>
+        <div style="font-size:13px;color:#667085;line-height:1.55;">
+          Versão 1.3.6<br>
+          Idealizado e desenvolvido por <strong style="display:inline;color:#344054;">Gabriel Matheus Abreu de Souza</strong>.<br><br>
+          Desenvolvimento realizado com apoio do <strong style="display:inline;color:#344054;">ChatGPT da OpenAI</strong>, utilizando IA generativa e práticas de Prompt Engineering para definição de requisitos, estrutura, interface, comportamento e refinamento da solução.
+        </div>
+
+        <div class="credit-links">
+          <a href="https://www.linkedin.com/in/gabriel-zeus/" target="_blank" rel="noopener noreferrer">LinkedIn do desenvolvedor</a>
+          <a class="github" href="https://github.com/gabrielmasouza" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer">
+    Gerador de Assinatura Profissional v1.3.6 · Gabriel Matheus Abreu de Souza · Criado com apoio de ChatGPT / OpenAI
+  </div>
+
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+const examples = {
+  john: {
+    label:'Demo criativa — John Stewart',
+    description:'Persona criativa para demonstrar que profissão, áreas, cores e frase podem ser totalmente personalizadas.',
+    name:'John Stewart',
+    highlight:'Stewart',
+    role:'Arquiteto | Oficial do Corpo dos Lanternas Verdes',
+    roleHint:'Exemplo criativo. Troque pelo seu curso, cargo ou profissão real.',
+    areas:'Arquitetura, Liderança, Estratégia, Operações',
+    areasHint:'Exemplo: escolha 3 ou 4 áreas que representem aquilo em que você atua ou quer atuar.',
+    phone:'(313) 555-0147',
+    country:'1',
+    waMessage:'Olá John, vi seu contato no e-mail!',
+    email:'john.stewart@example.com',
+    linkedin:'https://www.linkedin.com/in/john-stewart-exemplo/',
+    location:'Detroit, MI',
+    primary:'#111820',
+    accent:'#00A651',
+    tagline:'Construindo soluções com disciplina, propósito e visão.',
+    taglineHint:'Exemplo de frase curta com identidade pessoal.',
+    showPhoto:false,
+    photoUrl:''
+  },
+
+  tech: {
+    label:'Tecnologia',
+    description:'Exemplo para estudantes e profissionais de desenvolvimento, dados, cloud, automação, IA e áreas relacionadas.',
+    name:'Ana Ribeiro',
+    highlight:'Ribeiro',
+    role:'Estudante de Ciência da Computação',
+    roleHint:'Ex.: Estudante de ADS, Desenvolvedor Júnior, Analista de Dados, Suporte de TI.',
+    areas:'Desenvolvimento, Dados, Cloud, IA',
+    areasHint:'Ex.: Desenvolvimento, Dados, Cloud, IA — use apenas áreas que realmente representem seu perfil.',
+    phone:'(31) 99999-0001',
+    country:'55',
+    waMessage:'Olá Ana, vi seu contato no e-mail!',
+    email:'ana.ribeiro@example.com',
+    linkedin:'https://www.linkedin.com/in/ana-ribeiro-exemplo/',
+    location:'Belo Horizonte, MG',
+    primary:'#111827',
+    accent:'#0A84FF',
+    tagline:'Transformando problemas em soluções digitais.',
+    taglineHint:'Ex.: Transformando problemas em soluções digitais.',
+    showPhoto:false,
+    photoUrl:''
+  },
+
+  admin: {
+    label:'Administrativo / Negócios',
+    description:'Exemplo para áreas administrativas, atendimento, operações, finanças, gestão e processos.',
+    name:'Marina Costa',
+    highlight:'Costa',
+    role:'Assistente Administrativa | Estudante de Administração',
+    roleHint:'Ex.: Assistente Administrativo, Analista Financeiro, Estudante de Administração.',
+    areas:'Processos, Atendimento, Excel, Organização',
+    areasHint:'Ex.: Processos, Atendimento, Excel, Organização.',
+    phone:'(31) 99999-0002',
+    country:'55',
+    waMessage:'Olá Marina, vi seu contato no e-mail!',
+    email:'marina.costa@example.com',
+    linkedin:'https://www.linkedin.com/in/marina-costa-exemplo/',
+    location:'Belo Horizonte, MG',
+    primary:'#172033',
+    accent:'#7C3AED',
+    tagline:'Organização, eficiência e melhoria contínua.',
+    taglineHint:'Ex.: Organização, eficiência e melhoria contínua.',
+    showPhoto:false,
+    photoUrl:''
+  },
+
+  engineering: {
+    label:'Engenharia',
+    description:'Exemplo para estudantes e profissionais de engenharia, projetos, qualidade, produção e melhoria contínua.',
+    name:'Lucas Almeida',
+    highlight:'Almeida',
+    role:'Estudante de Engenharia de Produção',
+    roleHint:'Ex.: Engenheira Civil, Estudante de Engenharia Mecânica, Analista de Projetos.',
+    areas:'Projetos, Processos, Qualidade, Melhoria Contínua',
+    areasHint:'Ex.: Projetos, Processos, Qualidade, Melhoria Contínua.',
+    phone:'(31) 99999-0003',
+    country:'55',
+    waMessage:'Olá Lucas, vi seu contato no e-mail!',
+    email:'lucas.almeida@example.com',
+    linkedin:'https://www.linkedin.com/in/lucas-almeida-exemplo/',
+    location:'Contagem, MG',
+    primary:'#1F2937',
+    accent:'#F97316',
+    tagline:'Projetando soluções com eficiência e propósito.',
+    taglineHint:'Ex.: Projetando soluções com eficiência e propósito.',
+    showPhoto:false,
+    photoUrl:''
+  },
+
+  design: {
+    label:'Design / Criativo',
+    description:'Exemplo para design gráfico, UI/UX, branding, conteúdo e outras áreas criativas.',
+    name:'Beatriz Lima',
+    highlight:'Lima',
+    role:'Designer Gráfica | UI/UX em formação',
+    roleHint:'Ex.: Designer Gráfico, UX Designer, Social Media, Diretor de Arte.',
+    areas:'Design, UX, Branding, Prototipação',
+    areasHint:'Ex.: Design, UX, Branding, Prototipação.',
+    phone:'(31) 99999-0004',
+    country:'55',
+    waMessage:'Olá Beatriz, vi seu contato no e-mail!',
+    email:'beatriz.lima@example.com',
+    linkedin:'https://www.linkedin.com/in/beatriz-lima-exemplo/',
+    location:'Belo Horizonte, MG',
+    primary:'#18181B',
+    accent:'#EC4899',
+    tagline:'Transformando ideias em experiências claras e funcionais.',
+    taglineHint:'Ex.: Transformando ideias em experiências claras e funcionais.',
+    showPhoto:false,
+    photoUrl:''
+  },
+
+  health: {
+    label:'Saúde',
+    description:'Exemplo para estudantes e profissionais de enfermagem, fisioterapia, farmácia e outras áreas da saúde.',
+    name:'Rafael Martins',
+    highlight:'Martins',
+    role:'Estudante de Enfermagem',
+    roleHint:'Ex.: Estudante de Enfermagem, Fisioterapeuta, Farmacêutica, Técnica de Enfermagem.',
+    areas:'Assistência, Saúde, Organização, Humanização',
+    areasHint:'Ex.: Assistência, Saúde, Organização, Humanização.',
+    phone:'(31) 99999-0005',
+    country:'55',
+    waMessage:'Olá Rafael, vi seu contato no e-mail!',
+    email:'rafael.martins@example.com',
+    linkedin:'https://www.linkedin.com/in/rafael-martins-exemplo/',
+    location:'Belo Horizonte, MG',
+    primary:'#16323F',
+    accent:'#0F9D8A',
+    tagline:'Cuidado, responsabilidade e atenção em cada processo.',
+    taglineHint:'Ex.: Cuidado, responsabilidade e atenção em cada processo.',
+    showPhoto:false,
+    photoUrl:''
+  }
+};
+
+const defaults = examples.john;
+
+let localPhotoData = '';
+
+function escapeHtml(str=''){
+  return String(str)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#039;');
+}
+
+function onlyDigits(str=''){
+  return String(str).replace(/\D/g,'');
+}
+
+function normalizeLinkedin(url=''){
+  let value=url.trim();
+  if(!value) return '';
+  if(!/^https?:\/\//i.test(value)) value='https://'+value;
+  return value;
+}
+
+function displayLinkedin(url=''){
+  return url
+    .replace(/^https?:\/\//i,'')
+    .replace(/^www\./i,'')
+    .replace(/\/$/,'');
+}
+
+function splitName(name,highlight,primary,accent){
+  const h=(highlight||'').trim();
+
+  if(!h){
+    return `<span style="color:${primary};">${escapeHtml(name)}</span>`;
+  }
+
+  const idx=name.toLowerCase().indexOf(h.toLowerCase());
+
+  if(idx<0){
+    return `<span style="color:${primary};">${escapeHtml(name)}</span>`;
+  }
+
+  const before=escapeHtml(name.slice(0,idx));
+  const mid=escapeHtml(name.slice(idx,idx+h.length));
+  const after=escapeHtml(name.slice(idx+h.length));
+
+  return `
+    <span style="color:${primary};">${before}</span><span style="color:${accent};">${mid}</span><span style="color:#334155;">${after}</span>
+  `;
+}
+
+function buildAreas(raw,accent){
+  return raw.split(',')
+    .map(x=>x.trim())
+    .filter(Boolean)
+    .map(escapeHtml)
+    .join(`<span style="color:${accent};font-weight:700;"> &bull; </span>`);
+}
+
+function iconUrl(kind){
+  const icons = {
+    whatsapp:'https://img.icons8.com/color/48/whatsapp--v1.png',
+    mail:'https://img.icons8.com/color/48/gmail-new.png',
+    linkedin:'https://img.icons8.com/color/48/linkedin.png'
+  };
+  return icons[kind];
+}
+
+
+function getSelectedExample(){
+  return examples[$('exampleProfile').value] || examples.john;
+}
+
+function fieldValue(id,key){
+  const typed=$(id).value.trim();
+  if(typed) return typed;
+  const ex=getSelectedExample();
+  return String(ex[key] || '').trim();
+}
+
+function setExamplePlaceholders(ex){
+  $('name').placeholder=ex.name || 'Nome completo';
+  $('highlight').placeholder=ex.highlight || 'Parte do nome';
+  $('role').placeholder=ex.role || 'Curso / profissão';
+  $('areas').placeholder=ex.areas || 'Área 1, Área 2, Área 3, Área 4';
+  $('phone').placeholder=ex.phone || '(31) 99999-9999';
+  $('waMessage').placeholder=ex.waMessage || 'Olá, vi seu contato no e-mail!';
+  $('email').placeholder=ex.email || 'nome.sobrenome@email.com';
+  $('linkedin').placeholder=ex.linkedin || 'https://www.linkedin.com/in/seu-perfil/';
+  $('location').placeholder=ex.location || 'Cidade, Estado';
+  $('tagline').placeholder=ex.tagline || 'Sua frase profissional';
+}
+
+function formatPhoneBR(value){
+  const digits=onlyDigits(value).slice(0,11);
+  if(digits.length<=2) return digits ? `(${digits}` : '';
+  if(digits.length<=7) return `(${digits.slice(0,2)}) ${digits.slice(2)}`;
+  return `(${digits.slice(0,2)}) ${digits.slice(2,7)}-${digits.slice(7,11)}`;
+}
+
+function isValidPhone(){
+  return onlyDigits($('phone').value).length===11;
+}
+
+function isValidEmail(){
+  const value=$('email').value.trim();
+
+  // Regras práticas:
+  // 1) deve haver conteúdo antes e depois do @;
+  // 2) o domínio deve conter pelo menos um ponto;
+  // 3) não são aceitos espaços;
+  // 4) a extensão final deve ter ao menos 2 caracteres.
+  const emailRegex=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+  return emailRegex.test(value);
+}
+
+function setFieldValidity(fieldId,valid){
+  const field=$(fieldId);
+  if(field) field.classList.toggle('invalid',!valid);
+}
+
+function validateContactFields(showMessages=true){
+  const phoneValid=isValidPhone();
+  const emailValid=isValidEmail();
+  if(showMessages){
+    setFieldValidity('phoneField',phoneValid);
+    setFieldValidity('emailField',emailValid);
+  }
+  return phoneValid && emailValid;
+}
+
+function currentLinkColor(accent){
+  const selected=document.querySelector('input[name="linkColorMode"]:checked');
+  const mode=selected ? selected.value : 'accent';
+  return mode==='black' ? '#111827' : accent;
+}
+
+function applyExample(key){
+  const ex = examples[key] || examples.john;
+
+  // Os exemplos aparecem como placeholders cinza.
+  // Campos reais começam vazios para evitar que o usuário copie dados fictícios por engano.
+  ['name','highlight','role','areas','phone','waMessage','email','linkedin','location','tagline'].forEach(id=>{
+    $(id).value = '';
+  });
+
+  $('country').value = '55';
+
+  $('primaryPicker').value = ex.primary;
+  $('primaryHex').value = ex.primary;
+  $('accentPicker').value = ex.accent;
+  $('accentHex').value = ex.accent;
+
+  $('showPhoto').checked = ex.showPhoto;
+  $('photoUrl').value = '';
+  $('photoFile').value = '';
+  localPhotoData = '';
+
+  setExamplePlaceholders(ex);
+
+  $('exampleDescription').textContent = ex.description;
+  $('roleHint').textContent = ex.roleHint;
+  $('areasHint').textContent = ex.areasHint;
+  $('taglineHint').textContent = ex.taglineHint;
+
+  $('photoFields').style.display = ex.showPhoto ? 'block' : 'none';
+  $('localPhotoField').style.display = ex.showPhoto ? 'block' : 'none';
+
+  setFieldValidity('phoneField', true);
+  setFieldValidity('emailField', true);
+
+  buildSignature();
+}
+
+function compactSignatureHtml(html){
+  return html.replace(/\n\s*/g,'').trim();
+}
+
+function dataUrlBytes(dataUrl){
+  if(!dataUrl || !dataUrl.includes(',')) return 0;
+  const base64=dataUrl.split(',')[1] || '';
+  return Math.floor((base64.length*3)/4);
+}
+
+function calculatePhotoBudget(){
+  // Calcula quanto espaço sobra para a foto considerando o HTML atual sem imagem.
+  // Mantemos folga para alterações posteriores nos campos e para o limite do Gmail.
+  const baseHtml=createSignatureHtml('',false);
+  const targetTotal=8800;
+  const safetyMargin=500;
+  return Math.max(3200,Math.min(6200,targetTotal-baseHtml.length-safetyMargin));
+}
+
+function optimizeLocalPhoto(file){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onerror=()=>reject(new Error('Falha ao ler a imagem.'));
+
+    reader.onload=()=>{
+      const img=new Image();
+
+      img.onerror=()=>reject(new Error('Falha ao processar a imagem.'));
+      img.onload=()=>{
+        const crop=Math.min(img.naturalWidth,img.naturalHeight);
+        const sx=(img.naturalWidth-crop)/2;
+        const sy=(img.naturalHeight-crop)/2;
+
+        // A qualidade começa alta e só é reduzida se necessário.
+        const maxDataUrlLength=calculatePhotoBudget();
+        const dimensions=[108,104,100,96,92,88,84];
+        const qualities=[0.90,0.86,0.82,0.78,0.74,0.70,0.66,0.62,0.58,0.54];
+
+        let best='';
+
+        for(const dimension of dimensions){
+          const canvas=document.createElement('canvas');
+          canvas.width=dimension;
+          canvas.height=dimension;
+
+          const ctx=canvas.getContext('2d',{alpha:false});
+          ctx.fillStyle='#ffffff';
+          ctx.fillRect(0,0,dimension,dimension);
+          ctx.imageSmoothingEnabled=true;
+          ctx.imageSmoothingQuality='high';
+          ctx.drawImage(img,sx,sy,crop,crop,0,0,dimension,dimension);
+
+          for(const quality of qualities){
+            const candidate=canvas.toDataURL('image/jpeg',quality);
+            best=candidate;
+
+            if(candidate.length<=maxDataUrlLength){
+              resolve({
+                dataUrl:candidate,
+                dimension,
+                quality,
+                bytes:dataUrlBytes(candidate),
+                budget:maxDataUrlLength
+              });
+              return;
+            }
+          }
+        }
+
+        resolve({
+          dataUrl:best,
+          dimension:84,
+          quality:0.54,
+          bytes:dataUrlBytes(best),
+          budget:maxDataUrlLength
+        });
+      };
+
+      img.src=reader.result;
+    };
+
+    reader.readAsDataURL(file);
+  });
+}
+
+function createSignatureHtml(photoSource,includePhoto){
+  const name=fieldValue('name','name');
+  const highlight=fieldValue('highlight','highlight');
+  const role=fieldValue('role','role');
+  const areas=fieldValue('areas','areas');
+  const phone=fieldValue('phone','phone');
+  const country=onlyDigits($('country').value.trim()||'55');
+  const email=fieldValue('email','email');
+  const linkedin=normalizeLinkedin(fieldValue('linkedin','linkedin'));
+  const location=fieldValue('location','location');
+  const primary=$('primaryHex').value.trim()||'#111827';
+  const accent=$('accentHex').value.trim()||'#0A84FF';
+  const linkColor=currentLinkColor(accent);
+  const tagline=fieldValue('tagline','tagline');
+  const waDigits=country+onlyDigits(phone);
+  const waMessage=fieldValue('waMessage','waMessage');
+  const wa=`https://wa.me/${waDigits}?text=${encodeURIComponent(waMessage)}`;
+
+  const photoCell=includePhoto?`
+<td valign="middle" width="112" style="width:112px;padding:0 12px 0 0;">
+<img src="${escapeHtml(photoSource)}" width="100" height="100" alt="${escapeHtml(name)}" style="display:block;width:100px;height:100px;border-radius:50%;object-fit:cover;border:2px solid ${accent};">
+</td>`:'';
+
+  // Estrutura deliberadamente simples: uma linha por contato.
+  // Isso funciona melhor em telas estreitas do que dividir telefone/e-mail em colunas.
+  const html=`
+<table role="presentation" width="520" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:520px;border-collapse:collapse;font-family:Arial,Helvetica,sans-serif;color:#1f2937;">
+<tr>
+${photoCell}
+<td valign="top" style="border-left:3px solid ${accent};padding:0 0 0 12px;">
+<div style="font-size:19px;line-height:1.15;font-weight:700;margin:0;color:${primary};">${splitName(name,highlight,primary,accent)}</div>
+<div style="font-size:12px;line-height:1.35;color:#475569;font-weight:600;margin-top:3px;">${escapeHtml(role)}</div>
+<div style="font-size:12px;line-height:1.4;margin-top:2px;color:#334155;">${buildAreas(areas,accent)}</div>
+<div style="height:7px;line-height:7px;font-size:7px;">&nbsp;</div>
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;font-family:Arial,Helvetica,sans-serif;font-size:11.5px;line-height:1.35;color:#475569;">
+<tr>
+<td width="21" style="width:21px;padding:0 6px 4px 0;vertical-align:middle;"><img src="${iconUrl('whatsapp')}" width="15" height="15" alt="WhatsApp" style="display:block;width:15px;height:15px;border:0;"></td>
+<td style="padding:0 0 4px 0;vertical-align:middle;white-space:nowrap;"><a href="${wa}" style="color:${linkColor};text-decoration:none;">${escapeHtml(phone)}</a></td>
+</tr>
+<tr>
+<td width="21" style="width:21px;padding:0 6px 4px 0;vertical-align:middle;"><img src="${iconUrl('mail')}" width="15" height="15" alt="E-mail" style="display:block;width:15px;height:15px;border:0;"></td>
+<td style="padding:0 0 4px 0;vertical-align:middle;"><a href="mailto:${escapeHtml(email)}" style="color:${linkColor};text-decoration:none;word-break:break-word;">${escapeHtml(email)}</a></td>
+</tr>
+<tr>
+<td width="21" style="width:21px;padding:0 6px 2px 0;vertical-align:middle;"><img src="${iconUrl('linkedin')}" width="15" height="15" alt="LinkedIn" style="display:block;width:15px;height:15px;border:0;"></td>
+<td style="padding:0 0 2px 0;vertical-align:middle;"><a href="${escapeHtml(linkedin)}" style="color:${linkColor};text-decoration:none;font-weight:700;word-break:break-word;">${escapeHtml(displayLinkedin(linkedin))}</a></td>
+</tr>
+${location?`<tr><td width="21" style="width:21px;padding:0 6px 0 0;vertical-align:middle;color:${accent};font-weight:700;text-align:center;">•</td><td style="padding:0;vertical-align:middle;color:#64748b;">${escapeHtml(location)}</td></tr>`:''}
+</table>
+
+${tagline?`<div style="height:7px;line-height:7px;font-size:7px;">&nbsp;</div><div style="font-size:10.5px;line-height:1.35;color:#64748b;font-style:italic;">${escapeHtml(tagline)}</div>`:''}
+</td>
+</tr>
+</table>`;
+
+  return compactSignatureHtml(html);
+}
+
+function buildSignature(){
+  const showPhoto=$('showPhoto').checked;
+  const photoUrl=$('photoUrl').value.trim();
+  const photoSource=localPhotoData || photoUrl;
+  const includePhoto=showPhoto && !!photoSource;
+
+  const html=createSignatureHtml(photoSource,includePhoto);
+
+  $('signature').innerHTML=html;
+  $('htmlCode').value=html;
+
+  const size=$('gmailSize');
+  if(size){
+    const count=html.length;
+    const pct=Math.min(100,Math.round((count/10000)*100));
+    size.textContent=`HTML final: ${count.toLocaleString('pt-BR')} caracteres de 10.000 (${pct}%).`;
+    size.style.color=count>9500?'#d92d20':count>8500?'#b54708':'#667085';
+  }
+}
+
+function canExportSignature(){
+  const html=$('htmlCode').value;
+
+  if(html.length<=9500) return true;
+
+  $('status').textContent='A assinatura ficou muito próxima do limite do Gmail. Tente uma foto menor ou reduza algum conteúdo.';
+  return false;
+}
+
+function syncColors(){
+  $('primaryHex').value=$('primaryPicker').value.toUpperCase();
+  $('accentHex').value=$('accentPicker').value.toUpperCase();
+  buildSignature();
+}
+
+function syncPickerFromHex(pickerId,hexId){
+  const val=$(hexId).value.trim();
+  if(/^#[0-9A-Fa-f]{6}$/.test(val)) $(pickerId).value=val;
+  buildSignature();
+}
+
+document.querySelectorAll('input,textarea,select').forEach(el=>{
+  el.addEventListener('input',buildSignature);
+  el.addEventListener('change',buildSignature);
+});
+
+$('exampleProfile').addEventListener('change',()=>{
+  applyExample($('exampleProfile').value);
+  $('status').textContent='Exemplo carregado. Agora personalize com seus dados.';
+});
+
+
+$('phone').addEventListener('input',()=>{
+  const cursorAtEnd = $('phone').selectionStart === $('phone').value.length;
+  $('phone').value = formatPhoneBR($('phone').value);
+  if(cursorAtEnd) $('phone').setSelectionRange($('phone').value.length,$('phone').value.length);
+  if($('phone').value) setFieldValidity('phoneField', isValidPhone());
+  else setFieldValidity('phoneField', true);
+  buildSignature();
+});
+
+$('phone').addEventListener('blur',()=>{
+  if($('phone').value) setFieldValidity('phoneField', isValidPhone());
+});
+
+$('email').addEventListener('input',()=>{
+  if($('email').value) setFieldValidity('emailField', isValidEmail());
+  else setFieldValidity('emailField', true);
+  buildSignature();
+});
+
+$('email').addEventListener('blur',()=>{
+  if($('email').value) setFieldValidity('emailField', isValidEmail());
+});
+
+document.querySelectorAll('input[name="linkColorMode"]').forEach(radio=>{
+  radio.addEventListener('change',buildSignature);
+});
+
+$('primaryPicker').addEventListener('input',syncColors);
+$('accentPicker').addEventListener('input',syncColors);
+$('primaryHex').addEventListener('input',()=>syncPickerFromHex('primaryPicker','primaryHex'));
+$('accentHex').addEventListener('input',()=>syncPickerFromHex('accentPicker','accentHex'));
+
+$('showPhoto').addEventListener('change',()=>{
+  $('photoFields').style.display=$('showPhoto').checked?'block':'none';
+  $('localPhotoField').style.display=$('showPhoto').checked?'block':'none';
+  buildSignature();
+});
+
+$('photoFile').addEventListener('change',async e=>{
+  const file=e.target.files&&e.target.files[0];
+  const status=$('photoStatus');
+
+  if(!file){
+    localPhotoData='';
+    if(status) status.textContent='';
+    buildSignature();
+    return;
+  }
+
+  if(!file.type.startsWith('image/')){
+    localPhotoData='';
+    if(status){
+      status.textContent='Selecione um arquivo de imagem válido.';
+      status.style.color='#d92d20';
+    }
+    buildSignature();
+    return;
+  }
+
+  if(status){
+    status.textContent='Otimizando foto...';
+    status.style.color='#667085';
+  }
+
+  try{
+    const result=await optimizeLocalPhoto(file);
+    localPhotoData=result.dataUrl;
+
+    if(status){
+      status.textContent=`Foto otimizada: ${result.dimension}×${result.dimension}px · qualidade ${Math.round(result.quality*100)}% · aproximadamente ${(result.bytes/1024).toFixed(1)} KB.`;
+      status.style.color='#177245';
+    }
+
+    buildSignature();
+  }catch(err){
+    localPhotoData='';
+
+    if(status){
+      status.textContent='Não foi possível processar esta imagem. Tente outro arquivo.';
+      status.style.color='#d92d20';
+    }
+
+    buildSignature();
+  }
+});
+
+$('copyFormatted').addEventListener('click',async()=>{
+  if(!validateContactFields(true)){
+    $('status').textContent='Revise o telefone e o e-mail antes de copiar a assinatura.';
+    return;
+  }
+
+  if(!canExportSignature()) return;
+
+  const html=$('htmlCode').value;
+  const text=$('signature').innerText;
+
+  try{
+    if(navigator.clipboard&&window.ClipboardItem){
+      const item=new ClipboardItem({
+        'text/html':new Blob([html],{type:'text/html'}),
+        'text/plain':new Blob([text],{type:'text/plain'})
+      });
+
+      await navigator.clipboard.write([item]);
+      $('status').textContent='Assinatura formatada copiada. Agora cole no Gmail.';
+      return;
+    }
+  }catch(e){}
+
+  const range=document.createRange();
+  range.selectNode($('signature'));
+
+  const sel=window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+
+  try{
+    document.execCommand('copy');
+    $('status').textContent='Assinatura formatada copiada. Agora cole no Gmail.';
+  }catch(e){
+    $('status').textContent='Selecione a assinatura e pressione Ctrl + C.';
+  }
+
+  sel.removeAllRanges();
+});
+
+$('copyHtml').addEventListener('click',async()=>{
+  if(!validateContactFields(true)){
+    $('status').textContent='Revise o telefone e o e-mail antes de copiar o HTML.';
+    return;
+  }
+
+  if(!canExportSignature()) return;
+
+  try{
+    await navigator.clipboard.writeText($('htmlCode').value);
+    $('status').textContent='Código HTML copiado.';
+  }catch(e){
+    $('htmlCode').select();
+    document.execCommand('copy');
+    $('status').textContent='Código HTML copiado.';
+  }
+});
+
+$('downloadHtml').addEventListener('click',()=>{
+  if(!validateContactFields(true)){
+    $('status').textContent='Revise o telefone e o e-mail antes de baixar a assinatura.';
+    return;
+  }
+
+  if(!canExportSignature()) return;
+
+  const body=$('htmlCode').value;
+
+  const doc=`<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Assinatura de e-mail</title>
+</head>
+<body style="margin:24px;background:#ffffff;">
+${body}
+</body>
+</html>`;
+
+  const blob=new Blob([doc],{type:'text/html;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+
+  a.href=url;
+
+  const safe=($('name').value||'assinatura')
+    .trim()
+    .replace(/[^\w\-]+/g,'_');
+
+  a.download=`assinatura_${safe}.html`;
+
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+
+  $('status').textContent='Arquivo HTML da assinatura gerado.';
+});
+
+$('reset').addEventListener('click',()=>{
+  applyExample($('exampleProfile').value);
+  $('status').textContent='Exemplo selecionado restaurado. Os exemplos aparecem em cinza até você digitar seus dados.';
+});
+
+applyExample('john');
+</script>
+
+</body>
+</html>
